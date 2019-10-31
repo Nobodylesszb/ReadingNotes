@@ -114,6 +114,101 @@
 - 两个配置
 - 三个命令
 - 运维经验
+- ![image-20191031211101476](/Users/bo/Library/Application Support/typora-user-images/image-20191031211101476.png)
+- 两个配置 
+  - slowlog-max-len
+    - 先进先出队列
+    - 固定长度
+    - 保存在内存中
+  - Slowlog-log-slower-than
+    - 慢查询阈值（微秒）
+    - Slowlog-log-slower-than=0 记录所有命令
+  - 配置方法
+    - Config get slowlog-max-len =128
+    - Config get slowlog-log-slower-than 10000
+  - 修改配置文件
+  - 动态配置
+- 慢查询命令
+  - Slowlog get[n]：获取慢查询队列
+  - Slowlog len : 获取慢查询队列长度
+  - Slowlog reset 清空慢查询
+- 运维经验
+  - Slowlog-max-len 不要设置太大，默认10没ms,通常设置1ms
+  - Slowlog-log-slower-than 不要设置太小，通常设置1000左右
+  - 理解命令生命周期
+  - 定期持久化慢查询
+
+#### Pipeline
+
+![image-20191031212756871](/Users/bo/Library/Application Support/typora-user-images/image-20191031212756871.png)
+
+![image-20191031212910830](/Users/bo/Library/Application Support/typora-user-images/image-20191031212910830.png)
+
+- 注意
+  1. redis的命令时间是微秒级别
+  2. pipeline每次条数要控制（网络）
+- 使用建议
+  - 注意每次pipline携带数据量
+  - pipeline每次只能作用在一个redis节点上
+
+#### 发布订阅
+
+- api
+  - publish channel message
+  - Subscribe [channel]
+  - Unsubscribe channel
+  - psubscribe [pattern]订阅模式
+- ![image-20191031214409798](/Users/bo/Library/Application Support/typora-user-images/image-20191031214409798.png)
+
+#### bitmap
+
+- api
+  - Getbit key offset
+  - Setbit key offset value
+  - bitcount[start,end] 获得指定范围内位值位1的个数
+  - bit op destkey key [key] 将多个bitmap的and,or,not,xor操作并将结果保存在destkey中
+
+#### hyperloglog
+
+- 极少的空间完成独立数量统计
+- api
+  - pfadd key element [elment...] 向hyperloglog添加元素
+  - pfcount key 计算hyperloglog的独立总数
+  - pfmerge destkey sourcekey [sourcekey] 合并多个hyperloglog
+- 缺点
+  - 是否能容忍错误(错误率:0.81%)
+  - 是否需要单条数据
+
+#### geo
+
+- api
+  - geoadd key log lat memeber
+  - Geopos key member 获取地理位置信息
+  - Geodist key member1 member2 [m,km,mi,ft]
+  - Georadius
+
+### Redis持久化的取舍和选择
+
+### rdb
+
+- 触发机制
+  - sava 同步 阻塞 复杂度n
+  - bgsave 异步 fork子进程
+  - 自动
+- ![image-20191031225903551](/Users/bo/Library/Application Support/typora-user-images/image-20191031225903551.png)
+- ![image-20191031230608806](/Users/bo/Library/Application Support/typora-user-images/image-20191031230608806.png)
+- 全量复制
+
+- debug rekiad
+- Shutdown 这些都会产生rdb
+
+![image-20191031235039478](/Users/bo/Library/Application Support/typora-user-images/image-20191031235039478.png)
+
+
+
+
+
+
 
 
 
