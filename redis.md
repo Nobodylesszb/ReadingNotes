@@ -189,7 +189,7 @@
 
 ### Redis持久化的取舍和选择
 
-### rdb
+#### rdb
 
 - 触发机制
   - sava 同步 阻塞 复杂度n
@@ -203,6 +203,55 @@
 - Shutdown 这些都会产生rdb
 
 ![image-20191031235039478](/Users/bo/Library/Application Support/typora-user-images/image-20191031235039478.png)
+
+#### AOF
+
+- rdb问题
+  - 耗时，耗性能
+  - ![image-20191101221025164](/Users/bo/Library/Application Support/typora-user-images/image-20191101221025164.png)
+- 原理
+  - 写日志模式
+- 三种策略
+  - always
+    - ![image-20191101221235930](/Users/bo/Library/Application Support/typora-user-images/image-20191101221235930.png)
+  - everysec
+    - ![image-20191101221253532](/Users/bo/Library/Application Support/typora-user-images/image-20191101221253532.png)
+  - no
+    - ![image-20191101221337060](/Users/bo/Library/Application Support/typora-user-images/image-20191101221337060.png)
+  - ![image-20191101221428426](/Users/bo/Library/Application Support/typora-user-images/image-20191101221428426.png)
+- AOF重写
+  -   减少磁盘占用量
+  - 加速恢复速度
+- aof重写实现方式
+  - bgrewriteaof
+    - 异步执行
+  - aof重写配置
+    - Auto-aof-rewrite-min-size aof文件重写需要的尺寸
+    - auto-aof-rewrite-percentage aof文件增长率
+  - 统计
+    - aof_current_size aof当前尺寸
+    - aof_base_size aof上次启动和重写的尺寸
+    - ![image-20191101223153486](/Users/bo/Library/Application Support/typora-user-images/image-20191101223153486.png)
+
+#### RDB和aof抉择
+
+- ![image-20191101230707741](/Users/bo/Library/Application Support/typora-user-images/image-20191101230707741.png)
+- RDB最佳策略
+  - 关
+  - 集中管理
+  - 主从，从开
+- AOF最佳策略
+  - 开：缓存和存储
+  - aof重写集中管理
+  - everysec
+- 最佳策略
+  - 小分片
+  - 缓存或者存储
+  - 监控(硬盘，内存，负载，网络)
+
+### 开发运维常见问题
+
+
 
 
 
