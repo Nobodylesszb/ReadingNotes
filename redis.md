@@ -251,9 +251,86 @@
 
 ### 开发运维常见问题
 
+**fork**
+
+<img src="/Users/bo/Library/Application Support/typora-user-images/image-20191102205609558.png" alt="image-20191102205609558" style="zoom:50%;" />
+
+**子进程优化**
+
+![image-20191102205845704](/Users/bo/Library/Application Support/typora-user-images/image-20191102205845704.png)
+
+**aof追加**
+
+![image-20191102210230275](/Users/bo/Documents/notes/life/image-20191102210230275.png)
+
+### redis复制的原理和优化
+
+#### 主从复制实现方式
+
+1. slaveof命令
+   1. Slaveof host port 称为某个主机的从节点
+   2. slaveof no one 取消复制
+   3. 成为从节点后之前的数据会清零
+2. 配置
+   1. Slaveof ip port
+   2. Slave-read-only yes
+   3. info replication 查询分片消息
+
+#### 全量复制
+
+![image-20191102221832531](/Users/bo/Library/Application Support/typora-user-images/image-20191102221832531.png)
+
+**开销**
+
+- bgsave时间
+- rdb文件网络传输时间
+- 从节点清除数据时间
+- 从节点加载rdb的时间
+- 可能的aof重写时间
+
+#### 部分复制
+
+![image-20191102222157245](/Users/bo/Library/Application Support/typora-user-images/image-20191102222157245.png)
+
+#### **故障处理**
+
+- slave宕机
+- ![image-20191102222516833](/Users/bo/Library/Application Support/typora-user-images/image-20191102222516833.png)
+- master宕机
+- ![image-20191102222612720](/Users/bo/Library/Application Support/typora-user-images/image-20191102222612720.png)
+
+#### 开发与运维中的问题
+
+1. 读写分离
+   1. 复制数据延迟
+   2. 读到过期数据
+   3. 从节点故障
+2. 主从配置不一致
+   1. 例如maxmemory不一致，丢失数据
+3. 规避全量复制
+   1. 第一次全量复制 不可规避
+   2. 节点运行id不匹配
+      1. 主节点重启（运行id变化）
+      2. 故障转移
+   3. 复制积压缓冲区不足
+      1. 网络中断，部分复制无法满足
+      2. 增大复制缓冲区配置rel_backlog_size 网络增强
+4. 规避复制风暴
+   1. 单主节点复制风暴
+      1. 一个主节点拥有很多从节点，如果主节点挂了，那么很多从节点就会进行全量复制
+      2. 主节点重启，多从节点复制
+      3. 更换复制拓扑
+   2. 单机器复制风暴
+      1. 机器宕机后，大量全量复制
+      2. 主节点分散多机器
 
 
 
+
+
+
+
+### 
 
 
 
