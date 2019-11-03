@@ -324,6 +324,18 @@
       1. 机器宕机后，大量全量复制
       2. 主节点分散多机器
 
+### Redis-sentinel
+
+![image-20191103093250163](/Users/bo/Library/Application Support/typora-user-images/image-20191103093250163.png)
+
+#### 客户端连接sentinel
+
+![image-20191103103554305](/Users/bo/Library/Application Support/typora-user-images/image-20191103103554305.png)
+
+
+
+
+
 
 
 
